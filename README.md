@@ -2,7 +2,7 @@
 
 Regress your Emacs to one-color world.
 
-!(monochwome.png "Monochwome")
+![Screenshot of Monochwome](monochwome.png "Monochwome")
 
 Currently just a proof-of-concept. Works reasonably well as a theme for ELisp hacking.
 
