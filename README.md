@@ -2,9 +2,10 @@
 
 Regress your Emacs to one-color world.
 
-![Screenshot of Monochwome](monochwome.png "Monochwome")
+![Screenshot of Monochwome](monochwome.png "Monochwome (orange)")
+![Screenshot of Monochwome](monochwome-green.png "Monochwome (green)")
 
-Currently just a proof-of-concept. Works reasonably well as a theme for ELisp hacking.
+Currently just a proof-of-concept. Works reasonably well as a theme for ELisp hacking and org-mode writing.
 
 # Features
 
