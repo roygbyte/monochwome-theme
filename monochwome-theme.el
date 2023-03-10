@@ -65,99 +65,99 @@ This value should be a midtone value. Named colors like 'red', 'blue', 'green', 
   :package-version '(monochwome . "2.6"))
 
 (setq monochwome-color-darkest
-      (culler-hsl-to-hex (culler-darken-hsl (culler-rgb-to-hsl (color-name-to-rgb monochwome-seed-hue))
-                                            (* monochwome-fg-contrast-ratio 50))))
+	  (culler-hsl-to-hex (culler-darken-hsl (culler-rgb-to-hsl (color-name-to-rgb monochwome-seed-hue))
+						(* monochwome-fg-contrast-ratio 50))))
 (setq monochwome-color-lightest
-      (culler-hsl-to-hex (culler-lighten-hsl (culler-rgb-to-hsl (color-name-to-rgb monochwome-seed-hue))
-                                             (* monochwome-fg-contrast-ratio 50))))
+	  (culler-hsl-to-hex (culler-lighten-hsl (culler-rgb-to-hsl (color-name-to-rgb monochwome-seed-hue))
+						 (* monochwome-fg-contrast-ratio 50))))
 
 (setq monochwome-bg-0
-      (culler-hsl-to-hex (culler-darken-hsl (culler-rgb-to-hsl (color-name-to-rgb monochwome-seed-hue))
-                                            (* monochwome-bg-contrast-ratio 50))))
+	  (culler-hsl-to-hex (culler-darken-hsl (culler-rgb-to-hsl (color-name-to-rgb monochwome-seed-hue))
+						(* monochwome-bg-contrast-ratio 50))))
 
 (setq monochwome-bg-tints-start-range
-      (culler-hsl-to-hex (culler-lighten-hsl (culler-rgb-to-hsl (color-name-to-rgb monochwome-bg-0)) 8)))
+	  (culler-hsl-to-hex (culler-lighten-hsl (culler-rgb-to-hsl (color-name-to-rgb monochwome-bg-0)) 8)))
 
 (defun monochwome-tints-from-colors(start-color stop-color steps)
   "Given a color, produce a range of tints. Color can be a name or hex. If hex, must start with a hash symbol.
 Evaluates to a list of hex values."
   (let* ((start-rgb (color-name-to-rgb start-color))
-         (stop-rgb (color-name-to-rgb stop-color))
-         (gradient (color-gradient start-rgb stop-rgb steps)))
-    (mapcar #'(lambda(color-step)
-              (color-rgb-to-hex (nth 0 color-step)
-                                (nth 1 color-step)
-                                (nth 2 color-step) 2)) gradient)))
+	 (stop-rgb (color-name-to-rgb stop-color))
+	 (gradient (color-gradient start-rgb stop-rgb steps)))
+	(mapcar #'(lambda(color-step)
+		  (color-rgb-to-hex (nth 0 color-step)
+				(nth 1 color-step)
+				(nth 2 color-step) 2)) gradient)))
 
 ;; should the lightest/darkest be appended into the list? otherwise they are never used.
 (setq monochwome-tone-0-tints (monochwome-tints-from-colors monochwome-seed-hue monochwome-color-lightest 8))
 (setq monochwome-tone-0-shades (monochwome-tints-from-colors monochwome-seed-hue monochwome-color-darkest 8))
 
 (setq monochwome-bg-0-shades (append (monochwome-tints-from-colors monochwome-bg-0 monochwome-color-darkest 3)
-                                       (list monochwome-color-darkest)))
+					   (list monochwome-color-darkest)))
 (setq monochwome-bg-0-tints (reverse (append (list monochwome-bg-tints-start-range)
-                                               (monochwome-tints-from-colors monochwome-bg-tints-start-range monochwome-bg-0  3))))
+						   (monochwome-tints-from-colors monochwome-bg-tints-start-range monochwome-bg-0  3))))
 
 ;; There should be a way to set desired contrast ratios?? This theme works because of the phenomenon of contrast. So find
 ;; a way to let me control that, incase I want to change the contrast!
 
 (defvar monochwome-default-colors-alist
   '(("monochwome-bg-3"     . (nth 3 monochwome-bg-0-shades))
-    ("monochwome-bg-2"     . (nth 2 monochwome-bg-0-shades))
-    ("monochwome-bg-1"     . (nth 1 monochwome-bg-0-shades))
-    ("monochwome-bg"       . monochwome-bg-0)
-    ("monochwome-bg+1"     . (nth 1 monochwome-bg-0-tints))
-    ("monochwome-bg+2"     . (nth 2 monochwome-bg-0-tints))
-    ("monochwome-bg+3"     . (nth 3 monochwome-bg-0-tints))
-    ("monochwome-tone-0+6" . (nth 6 monochwome-tone-0-tints))
-    ("monochwome-tone-0+5" . (nth 5 monochwome-tone-0-tints))
-    ("monochwome-tone-0+4" . (nth 4 monochwome-tone-0-tints))
-    ("monochwome-tone-0+3" . (nth 3 monochwome-tone-0-tints))
-    ("monochwome-tone-0+2" . (nth 2 monochwome-tone-0-tints))
-    ("monochwome-tone-0+3" . (nth 1 monochwome-tone-0-tints))
-    ("monochwome-tone-0+1" . (nth 0 monochwome-tone-0-tints))
-    ("monochwome-tone-0"   . monochwome-seed-hue)
-    ("monochwome-tone-0-1" . (nth 0 monochwome-tone-0-shades))
-    ("monochwome-tone-0-2" . (nth 1 monochwome-tone-0-shades))
-    ("monochwome-tone-0-3" . (nth 2 monochwome-tone-0-shades))
-    ("monochwome-tone-0-4" . (nth 3 monochwome-tone-0-shades))
-    ("monochwome-tone-0-5" . (nth 4 monochwome-tone-0-shades))
-    ("monochwome-lightest" . monochwome-color-lightest)
-    ("monochwome-darkest"  . monochwome-color-darkest)
-    ("monochwome-tone-1-6" . monochwome-seed-hue)
-    ("monochwome-tone-1-5" . monochwome-seed-hue)
-    ("monochwome-tone-1-4" . monochwome-seed-hue)
-    ("monochwome-tone-1-3" . monochwome-seed-hue)
-    ("monochwome-tone-1-2" . monochwome-seed-hue)
-    ("monochwome-tone-1-1" . monochwome-seed-hue)
-    ("monochwome-tone-1"   . monochwome-seed-hue)
-    ("monochwome-tone-1+1" . monochwome-seed-hue)
-    ("monochwome-tone-1+2" . monochwome-seed-hue)
-    ("monochwome-tone-2-2" . monochwome-seed-hue)
-    ("monochwome-tone-2-1" . monochwome-seed-hue)
-    ("monochwome-tone-2"   . monochwome-seed-hue)
-    ("monochwome-tone-3-5" . monochwome-seed-hue)
-    ("monochwome-tone-3-4" . monochwome-seed-hue)
-    ("monochwome-tone-3-3" . monochwome-seed-hue)
-    ("monochwome-tone-3-2" . monochwome-seed-hue)
-    ("monochwome-tone-3-1" . monochwome-seed-hue)
-    ("monochwome-tone-3"   . monochwome-seed-hue)
-    ("monochwome-tone-3+1" . monochwome-seed-hue)
-    ("monochwome-tone-3+2" . monochwome-seed-hue)
-    ("monochwome-tone-3+3" . monochwome-seed-hue)
-    ("monochwome-tone-3+4" . monochwome-seed-hue)
-    ("monochwome-tone-4+3" . monochwome-seed-hue)
-    ("monochwome-tone-4+2" . monochwome-seed-hue)
-    ("monochwome-tone-4+1" . monochwome-seed-hue)
-    ("monochwome-tone-4"   . monochwome-seed-hue)
-    ("monochwome-tone-4-1" . monochwome-seed-hue)
-    ("monochwome-tone-4-2" . monochwome-seed-hue)
-    ("monochwome-tone-4-3" . monochwome-seed-hue)
-    ("monochwome-tone-4-4" . monochwome-seed-hue)
-    ("monochwome-tone-4-5" . monochwome-seed-hue)
-    ("monochwome-tone-5"   . monochwome-seed-hue)
-    ("monochwome-tone-6"   . monochwome-seed-hue)
-    ("monochwome-tone-7"   . monochwome-seed-hue))
+	("monochwome-bg-2"     . (nth 2 monochwome-bg-0-shades))
+	("monochwome-bg-1"     . (nth 1 monochwome-bg-0-shades))
+	("monochwome-bg"       . monochwome-bg-0)
+	("monochwome-bg+1"     . (nth 1 monochwome-bg-0-tints))
+	("monochwome-bg+2"     . (nth 2 monochwome-bg-0-tints))
+	("monochwome-bg+3"     . (nth 3 monochwome-bg-0-tints))
+	("monochwome-tone-0+6" . (nth 6 monochwome-tone-0-tints))
+	("monochwome-tone-0+5" . (nth 5 monochwome-tone-0-tints))
+	("monochwome-tone-0+4" . (nth 4 monochwome-tone-0-tints))
+	("monochwome-tone-0+3" . (nth 3 monochwome-tone-0-tints))
+	("monochwome-tone-0+2" . (nth 2 monochwome-tone-0-tints))
+	("monochwome-tone-0+3" . (nth 1 monochwome-tone-0-tints))
+	("monochwome-tone-0+1" . (nth 0 monochwome-tone-0-tints))
+	("monochwome-tone-0"   . monochwome-seed-hue)
+	("monochwome-tone-0-1" . (nth 0 monochwome-tone-0-shades))
+	("monochwome-tone-0-2" . (nth 1 monochwome-tone-0-shades))
+	("monochwome-tone-0-3" . (nth 2 monochwome-tone-0-shades))
+	("monochwome-tone-0-4" . (nth 3 monochwome-tone-0-shades))
+	("monochwome-tone-0-5" . (nth 4 monochwome-tone-0-shades))
+	("monochwome-lightest" . monochwome-color-lightest)
+	("monochwome-darkest"  . monochwome-color-darkest)
+	("monochwome-tone-1-6" . monochwome-seed-hue)
+	("monochwome-tone-1-5" . monochwome-seed-hue)
+	("monochwome-tone-1-4" . monochwome-seed-hue)
+	("monochwome-tone-1-3" . monochwome-seed-hue)
+	("monochwome-tone-1-2" . monochwome-seed-hue)
+	("monochwome-tone-1-1" . monochwome-seed-hue)
+	("monochwome-tone-1"   . monochwome-seed-hue)
+	("monochwome-tone-1+1" . monochwome-seed-hue)
+	("monochwome-tone-1+2" . monochwome-seed-hue)
+	("monochwome-tone-2-2" . monochwome-seed-hue)
+	("monochwome-tone-2-1" . monochwome-seed-hue)
+	("monochwome-tone-2"   . monochwome-seed-hue)
+	("monochwome-tone-3-5" . monochwome-seed-hue)
+	("monochwome-tone-3-4" . monochwome-seed-hue)
+	("monochwome-tone-3-3" . monochwome-seed-hue)
+	("monochwome-tone-3-2" . monochwome-seed-hue)
+	("monochwome-tone-3-1" . monochwome-seed-hue)
+	("monochwome-tone-3"   . monochwome-seed-hue)
+	("monochwome-tone-3+1" . monochwome-seed-hue)
+	("monochwome-tone-3+2" . monochwome-seed-hue)
+	("monochwome-tone-3+3" . monochwome-seed-hue)
+	("monochwome-tone-3+4" . monochwome-seed-hue)
+	("monochwome-tone-4+3" . monochwome-seed-hue)
+	("monochwome-tone-4+2" . monochwome-seed-hue)
+	("monochwome-tone-4+1" . monochwome-seed-hue)
+	("monochwome-tone-4"   . monochwome-seed-hue)
+	("monochwome-tone-4-1" . monochwome-seed-hue)
+	("monochwome-tone-4-2" . monochwome-seed-hue)
+	("monochwome-tone-4-3" . monochwome-seed-hue)
+	("monochwome-tone-4-4" . monochwome-seed-hue)
+	("monochwome-tone-4-5" . monochwome-seed-hue)
+	("monochwome-tone-5"   . monochwome-seed-hue)
+	("monochwome-tone-6"   . monochwome-seed-hue)
+	("monochwome-tone-7"   . monochwome-seed-hue))
   "List of hues, tints, and shades for theme.
 Each element has the form (NAME . HEX)
 
@@ -169,12 +169,12 @@ Each element has the form (NAME . HEX)
 Also bind `class' to ((class color) (min-colors 89))."
   (declare (indent 0))
   `(let ((class '((class color) (min-colors 89)))
-         ,@(mapcar (lambda (cons)
-                     (list (intern (car cons)) (cdr cons)))
-                   monochwome-default-colors-alist)
-         (monochwome-variable-pitch (if monochwome-use-variable-pitch
-                               'variable-pitch 'default)))
-     ,@body))
+	 ,@(mapcar (lambda (cons)
+			 (list (intern (car cons)) (cdr cons)))
+		   monochwome-default-colors-alist)
+	 (monochwome-variable-pitch (if monochwome-use-variable-pitch
+				   'variable-pitch 'default)))
+	 ,@body))
 
 ;;; Theme Faces
 (monochwome-with-color-variables
@@ -186,15 +186,15 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(link           ((t (:foreground ,monochwome-tone-0 :underline t :italic t))))
    `(link-visited   ((t (:foreground ,monochwome-tone-0-2 :underline t :weight normal))))
    `(default        ((t (:foreground ,monochwome-tone-0 :background ,monochwome-bg :family "Iosevka" :height 105 :width expanded :weight light))))
-   `(variable-pitch ((,class (:height 110 :family "Iosevka Aile" :weight semilight)))) ;; does this work?
+   `(variable-pitch ((,class (:family "Iosevka Aile" :weight semilight)))) ;; does this work?
    `(cursor         ((t (:foreground ,monochwome-tone-0 :background ,monochwome-tone-0+1))))
    `(widget-field   ((t (:foreground ,monochwome-tone-0 :background ,monochwome-bg+3))))
    `(escape-glyph   ((t (:foreground ,monochwome-tone-0 :weight bold))))
    `(fringe         ((t (:foreground ,monochwome-tone-0-4))))
    `(header-line    ((t (:foreground ,monochwome-tone-0
-                                  :background ,monochwome-bg-2
-                                  :box (:line-width -1 :style released-button)
-                                  :extend t))))
+				  :background ,monochwome-bg-2
+				  :box (:line-width -1 :style released-button)
+				  :extend t))))
    `(highlight ((t (:background ,monochwome-tone-0+6))))
    `(success   ((t (:foreground ,monochwome-tone-3 :weight bold))))
    `(warning   ((t (:foreground ,monochwome-tone-6 :weight bold))))
@@ -232,7 +232,7 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(custom-group-tag ((t (:foreground ,monochwome-tone-4 :weight bold :height 1.2))))
    `(custom-state ((t (:foreground ,monochwome-tone-3+4))))
 ;;;;; display-fill-column-indicator
-   `(fill-column-indicator ((,class :foreground ,monochwome-bg-1 :weight semilight)))
+   `(fill-column-indicator ((,class :foreground ,monochwome-tone-0-5 :weight semilight)))
 ;;;;; eww
    '(eww-invalid-certificate ((t (:inherit error))))
    '(eww-valid-certificate   ((t (:inherit success))))
@@ -265,7 +265,7 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(mode-line-inactive ((t (:foreground ,monochwome-bg :background ,monochwome-tone-0-5))))
 
    `(region ((,class (:background ,monochwome-bg+3 :extend t))
-             (t :inverse-video t)))
+		 (t :inverse-video t)))
    `(secondary-selection ((t (:background ,monochwome-tone-0+5))))
    `(trailing-whitespace ((t (:background ,monochwome-tone-1))))
    `(vertical-border ((t (:foreground ,monochwome-bg+3))))
@@ -319,12 +319,12 @@ Also bind `class' to ((class color) (min-colors 89))."
 
 ;;;;; ace-jump
    `(ace-jump-face-background
-     ((t (:foreground ,monochwome-tone-0-1 :background ,monochwome-bg :inverse-video nil))))
+	 ((t (:foreground ,monochwome-tone-0-1 :background ,monochwome-bg :inverse-video nil))))
    `(ace-jump-face-foreground
-     ((t (:foreground ,monochwome-tone-3+2 :background ,monochwome-bg :inverse-video nil))))
+	 ((t (:foreground ,monochwome-tone-3+2 :background ,monochwome-bg :inverse-video nil))))
 ;;;;; ace-window
    `(aw-background-face
-     ((t (:foreground ,monochwome-tone-0-1 :background ,monochwome-bg :inverse-video nil))))
+	 ((t (:foreground ,monochwome-tone-0-1 :background ,monochwome-bg :inverse-video nil))))
    `(aw-leading-char-face ((t (:inherit aw-mode-line-face))))
 ;;;;; android mode
    `(android-mode-debug-face ((t (:foreground ,monochwome-tone-3+1))))
@@ -375,15 +375,15 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(popup-isearch-match ((t (:background ,monochwome-bg :foreground ,monochwome-tone-0))))
 ;;;;; avy
    `(avy-background-face
-     ((t (:foreground ,monochwome-tone-0-1 :background ,monochwome-bg :inverse-video nil))))
+	 ((t (:foreground ,monochwome-tone-0-1 :background ,monochwome-bg :inverse-video nil))))
    `(avy-lead-face-0
-     ((t (:foreground ,monochwome-tone-3+3 :background ,monochwome-bg :inverse-video nil :weight bold))))
+	 ((t (:foreground ,monochwome-tone-3+3 :background ,monochwome-bg :inverse-video nil :weight bold))))
    `(avy-lead-face-1
-     ((t (:foreground ,monochwome-tone-2 :background ,monochwome-bg :inverse-video nil :weight bold))))
+	 ((t (:foreground ,monochwome-tone-2 :background ,monochwome-bg :inverse-video nil :weight bold))))
    `(avy-lead-face-2
-     ((t (:foreground ,monochwome-tone-1+1 :background ,monochwome-bg :inverse-video nil :weight bold))))
+	 ((t (:foreground ,monochwome-tone-1+1 :background ,monochwome-bg :inverse-video nil :weight bold))))
    `(avy-lead-face
-     ((t (:foreground ,monochwome-tone-5 :background ,monochwome-bg :inverse-video nil :weight bold))))
+	 ((t (:foreground ,monochwome-tone-5 :background ,monochwome-bg :inverse-video nil :weight bold))))
 ;;;;; company-mode
    `(company-tooltip ((t (:foreground ,monochwome-tone-0 :background ,monochwome-bg-3))))
    `(company-tooltip-annotation ((t (:foreground ,monochwome-tone-6 :background ,monochwome-bg+1))))
@@ -482,15 +482,15 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(diff-refine-changed ((t (:background "#888811" :foreground ,monochwome-tone-2))))
    `(diff-refine-removed ((t (:background "#883333" :foreground ,monochwome-tone-1))))
    `(diff-header ((,class (:background ,monochwome-bg+2))
-                  (t (:background ,monochwome-tone-0 :foreground ,monochwome-bg))))
+		  (t (:background ,monochwome-tone-0 :foreground ,monochwome-bg))))
    `(diff-file-header
-     ((,class (:background ,monochwome-bg+2 :foreground ,monochwome-tone-0 :weight bold))
-      (t (:background ,monochwome-tone-0 :foreground ,monochwome-bg :weight bold))))
+	 ((,class (:background ,monochwome-bg+2 :foreground ,monochwome-tone-0 :weight bold))
+	  (t (:background ,monochwome-tone-0 :foreground ,monochwome-bg :weight bold))))
 ;;;;; diff-hl
    `(diff-hl-margin-symbols-alist '((insert . "+") (delete . "-") (change . "!") (unknown . "?") (ignored . "i")))
-   `(diff-hl-change ((,class (:foreground ,monochwome-tone-4 :background ,monochwome-tone-4-2))))
-   `(diff-hl-delete ((,class (:foreground ,monochwome-tone-1+1 :background ,monochwome-tone-1-1))))
-   `(diff-hl-insert ((,class (:foreground ,monochwome-tone-3+1 :background ,monochwome-tone-3-2))))
+   `(diff-hl-change ((,class (:foreground ,monochwome-tone-4 :background ,monochwome-bg))))
+   `(diff-hl-delete ((,class (:foreground ,monochwome-tone-1+1 :background ,monochwome-bg))))
+   `(diff-hl-insert ((,class (:foreground ,monochwome-tone-3+1 :background ,monochwome-bg))))
 ;;;;; dim-autoload
    `(dim-autoload-cookie-line ((t :foreground ,monochwome-bg+1)))
 ;;;;; dired+
@@ -583,25 +583,34 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(elfeed-log-info-level-face ((t (:foreground ,monochwome-tone-4))))
    `(elfeed-log-warn-level-face ((t (:foreground ,monochwome-tone-2))))
    `(elfeed-search-date-face ((t (:foreground ,monochwome-tone-2-1 :underline t
-                                              :weight bold))))
+						  :weight bold))))
    `(elfeed-search-tag-face ((t (:foreground ,monochwome-tone-3))))
    `(elfeed-search-feed-face ((t (:foreground ,monochwome-tone-5))))
    `(elfeed-search-title-face ((t (:foreground ,monochwome-tone-0-1))))
    `(elfeed-search-unread-title-face ((t (:foreground ,monochwome-tone-0 :weight bold))))
 ;;;;; emacs-w3m
    `(w3m-anchor ((t (:foreground ,monochwome-tone-2 :underline t
-                                 :weight bold))))
+				 :weight bold))))
    `(w3m-arrived-anchor ((t (:foreground ,monochwome-tone-2-2
-                                         :underline t :weight normal))))
+					 :underline t :weight normal))))
    `(w3m-form ((t (:foreground ,monochwome-tone-1-1 :underline t))))
    `(w3m-header-line-location-title ((t (:foreground ,monochwome-tone-2
-                                                     :underline t :weight bold))))
+							 :underline t :weight bold))))
    '(w3m-history-current-url ((t (:inherit match))))
    `(w3m-lnum ((t (:foreground ,monochwome-tone-3+2 :background ,monochwome-bg))))
    `(w3m-lnum-match ((t (:background ,monochwome-bg-2
-                                     :foreground ,monochwome-tone-6
-                                     :weight bold))))
+					 :foreground ,monochwome-tone-6
+					 :weight bold))))
    `(w3m-lnum-minibuffer-prompt ((t (:foreground ,monochwome-tone-2))))
+;;;;; emms
+   `(emms-playlist-track-face ((t (:inherit ,monochwome-variable-pitch :foreground ,monochwome-tone-0+2))))
+   `(emms-playlist-selected-face ((t (:inherit ,monochwome-variable-pitch :weight bold :foreground ,monochwome-tone-0+3))))
+   `(emms-browser-year/genre-face ((t (:inherit ,monochwome-variable-pitch :foreground ,monochwome-tone-0+2))))
+   `(emms-browser-artist-face ((t (:inherit ,monochwome-variable-pitch :foreground ,monochwome-tone-0+2))))
+   `(emms-browser-composer-face ((t (:inherit ,monochwome-variable-pitch :foreground ,monochwome-tone-0+2))))
+   `(emms-browser-performer-face ((t (:inherit ,monochwome-variable-pitch :foreground ,monochwome-tone-0+2))))
+   `(emms-browser-album-face ((t (:inherit ,monochwome-variable-pitch :foreground ,monochwome-tone-0+2))))
+   `(emms-browser-track-face ((t (:inherit ,monochwome-variable-pitch :foreground ,monochwome-tone-0+2))))
 ;;;;; erc
    `(erc-action-face ((t (:inherit erc-default-face))))
    `(erc-bold-face ((t (:weight bold))))
@@ -643,60 +652,60 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(flx-highlight-face ((t (:foreground ,monochwome-tone-3+2 :weight bold))))
 ;;;;; flycheck
    `(flycheck-error
-     ((((supports :underline (:style wave)))
-       (:underline (:style wave :color ,monochwome-tone-1-1) :inherit unspecified))
-      (t (:foreground ,monochwome-tone-1-1 :weight bold :underline t))))
+	 ((((supports :underline (:style wave)))
+	   (:underline (:style wave :color ,monochwome-tone-1-1) :inherit unspecified))
+	  (t (:foreground ,monochwome-tone-1-1 :weight bold :underline t))))
    `(flycheck-warning
-     ((((supports :underline (:style wave)))
-       (:underline (:style wave :color ,monochwome-tone-2) :inherit unspecified))
-      (t (:foreground ,monochwome-tone-2 :weight bold :underline t))))
+	 ((((supports :underline (:style wave)))
+	   (:underline (:style wave :color ,monochwome-tone-2) :inherit unspecified))
+	  (t (:foreground ,monochwome-tone-2 :weight bold :underline t))))
    `(flycheck-info
-     ((((supports :underline (:style wave)))
-       (:underline (:style wave :color ,monochwome-tone-5) :inherit unspecified))
-      (t (:foreground ,monochwome-tone-5 :weight bold :underline t))))
+	 ((((supports :underline (:style wave)))
+	   (:underline (:style wave :color ,monochwome-tone-5) :inherit unspecified))
+	  (t (:foreground ,monochwome-tone-5 :weight bold :underline t))))
    `(flycheck-fringe-error ((t (:foreground ,monochwome-tone-1-1 :weight bold))))
    `(flycheck-fringe-warning ((t (:foreground ,monochwome-tone-2 :weight bold))))
    `(flycheck-fringe-info ((t (:foreground ,monochwome-tone-5 :weight bold))))
 ;;;;; flymake
    `(flymake-errline
-     ((((supports :underline (:style wave)))
-       (:underline (:style wave :color ,monochwome-tone-1)
-                   :inherit unspecified :foreground unspecified :background unspecified))
-      (t (:foreground ,monochwome-tone-1-1 :weight bold :underline t))))
+	 ((((supports :underline (:style wave)))
+	   (:underline (:style wave :color ,monochwome-tone-1)
+		   :inherit unspecified :foreground unspecified :background unspecified))
+	  (t (:foreground ,monochwome-tone-1-1 :weight bold :underline t))))
    `(flymake-warnline
-     ((((supports :underline (:style wave)))
-       (:underline (:style wave :color ,monochwome-tone-6)
-                   :inherit unspecified :foreground unspecified :background unspecified))
-      (t (:foreground ,monochwome-tone-6 :weight bold :underline t))))
+	 ((((supports :underline (:style wave)))
+	   (:underline (:style wave :color ,monochwome-tone-6)
+		   :inherit unspecified :foreground unspecified :background unspecified))
+	  (t (:foreground ,monochwome-tone-6 :weight bold :underline t))))
    `(flymake-infoline
-     ((((supports :underline (:style wave)))
-       (:underline (:style wave :color ,monochwome-tone-3)
-                   :inherit unspecified :foreground unspecified :background unspecified))
-      (t (:foreground ,monochwome-tone-3-2 :weight bold :underline t))))
+	 ((((supports :underline (:style wave)))
+	   (:underline (:style wave :color ,monochwome-tone-3)
+		   :inherit unspecified :foreground unspecified :background unspecified))
+	  (t (:foreground ,monochwome-tone-3-2 :weight bold :underline t))))
    `(flymake-error
-     ((((supports :underline (:style wave)))
-       (:underline (:style wave :color ,monochwome-tone-1)
-                   :inherit unspecified :foreground unspecified :background unspecified))
-      (t (:foreground ,monochwome-tone-1-1 :weight bold :underline t))))
+	 ((((supports :underline (:style wave)))
+	   (:underline (:style wave :color ,monochwome-tone-1)
+		   :inherit unspecified :foreground unspecified :background unspecified))
+	  (t (:foreground ,monochwome-tone-1-1 :weight bold :underline t))))
    `(flymake-warning
-     ((((supports :underline (:style wave)))
-       (:underline (:style wave :color ,monochwome-tone-6)
-                   :inherit unspecified :foreground unspecified :background unspecified))
-      (t (:foreground ,monochwome-tone-6 :weight bold :underline t))))
+	 ((((supports :underline (:style wave)))
+	   (:underline (:style wave :color ,monochwome-tone-6)
+		   :inherit unspecified :foreground unspecified :background unspecified))
+	  (t (:foreground ,monochwome-tone-6 :weight bold :underline t))))
    `(flymake-note
-     ((((supports :underline (:style wave)))
-       (:underline (:style wave :color ,monochwome-tone-3)
-                   :inherit unspecified :foreground unspecified :background unspecified))
-      (t (:foreground ,monochwome-tone-3-2 :weight bold :underline t))))
+	 ((((supports :underline (:style wave)))
+	   (:underline (:style wave :color ,monochwome-tone-3)
+		   :inherit unspecified :foreground unspecified :background unspecified))
+	  (t (:foreground ,monochwome-tone-3-2 :weight bold :underline t))))
 ;;;;; flyspell
    `(flyspell-duplicate
-     ((((supports :underline (:style wave)))
-       (:underline (:style wave :color ,monochwome-tone-6) :inherit unspecified))
-      (t (:foreground ,monochwome-tone-6 :weight bold :underline t))))
+	 ((((supports :underline (:style wave)))
+	   (:underline (:style wave :color ,monochwome-tone-6) :inherit unspecified))
+	  (t (:foreground ,monochwome-tone-6 :weight bold :underline t))))
    `(flyspell-incorrect
-     ((((supports :underline (:style wave)))
-       (:underline (:style wave :color ,monochwome-tone-1) :inherit unspecified))
-      (t (:foreground ,monochwome-tone-1-1 :weight bold :underline t))))
+	 ((((supports :underline (:style wave)))
+	   (:underline (:style wave :color ,monochwome-tone-1) :inherit unspecified))
+	  (t (:foreground ,monochwome-tone-1-1 :weight bold :underline t))))
 ;;;;; full-ack
    `(ack-separator ((t (:foreground ,monochwome-tone-0))))
    `(ack-file ((t (:foreground ,monochwome-tone-4))))
@@ -800,17 +809,17 @@ Also bind `class' to ((class color) (min-colors 89))."
    '(hackernews-link          ((t (:inherit link         :underline nil))))
 ;;;;; helm
    `(helm-header
-     ((t (:foreground ,monochwome-tone-3
-                      :background ,monochwome-bg
-                      :underline nil
-                      :box nil
-                      :extend t))))
+	 ((t (:foreground ,monochwome-tone-3
+			  :background ,monochwome-bg
+			  :underline nil
+			  :box nil
+			  :extend t))))
    `(helm-source-header
-     ((t (:foreground ,monochwome-tone-2
-                      :background ,monochwome-bg-2
-                      :underline nil
-                      :weight bold
-                      :extend t))))
+	 ((t (:foreground ,monochwome-tone-2
+			  :background ,monochwome-bg-2
+			  :underline nil
+			  :weight bold
+			  :extend t))))
    `(helm-selection ((t (:background ,monochwome-bg+1 :underline nil))))
    `(helm-selection-line ((t (:background ,monochwome-bg+1))))
    `(helm-visible-mark ((t (:foreground ,monochwome-bg :background ,monochwome-tone-0-2))))
@@ -825,7 +834,9 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(helm-bookmark-info ((t (:foreground ,monochwome-tone-0+2 :background ,monochwome-bg))))
    `(helm-bookmark-man ((t (:foreground ,monochwome-tone-0 :background ,monochwome-bg))))
    `(helm-bookmark-w3m ((t (:foreground ,monochwome-tone-0 :background ,monochwome-bg))))
-   `(helm-buffer-not-saved ((t (:foreground ,monochwome-tone-0 :background ,monochwome-bg))))
+   `(helm-buffer-directory ((t (:weight bold :foreground ,monochwome-tone-0 :background ,monochwome-bg-0))))
+   `(helm-buffer-not-saved ((t (:underline t))))
+   `(helm-buffer-modified ((t (:underline t))))
    `(helm-buffer-process ((t (:foreground ,monochwome-tone-0 :background ,monochwome-bg))))
    `(helm-buffer-saved-out ((t (:foreground ,monochwome-tone-0 :background ,monochwome-bg))))
    `(helm-buffer-size ((t (:foreground ,monochwome-tone-0-1 :background ,monochwome-bg))))
@@ -861,12 +872,12 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(highlight-thing ((t (:background ,monochwome-bg+2))))
 ;;;;; hl-line-mode
    `(hl-line-face ((,class (:background ,monochwome-bg+1))
-                   (t :weight bold)))
+		   (t :weight bold)))
    `(hl-line ((,class (:background ,monochwome-bg+1 :extend t)) ; old emacsen
-              (t :weight bold)))
+		  (t :weight bold)))
 ;;;;; hl-sexp
    `(hl-sexp-face ((,class (:background ,monochwome-bg+1))
-                   (t :weight bold)))
+		   (t :weight bold)))
 ;;;;; hydra
    `(hydra-face-red ((t (:foreground ,monochwome-tone-1-1 :background ,monochwome-bg))))
    `(hydra-face-amaranth ((t (:foreground ,monochwome-tone-1-3 :background ,monochwome-bg))))
@@ -899,7 +910,7 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(irfc-std-number-face ((t (:foreground ,monochwome-tone-3+4 :weight bold))))
    `(irfc-table-item-face ((t (:foreground ,monochwome-tone-3+3))))
    `(irfc-title-face ((t (:foreground ,monochwome-tone-2
-                                      :underline t :weight bold))))
+					  :underline t :weight bold))))
 ;;;;; ivy
    `(ivy-confirm-face ((t (:foreground ,monochwome-tone-3 :background ,monochwome-bg))))
    `(ivy-current-match ((t (:foreground ,monochwome-tone-2 :weight bold :underline t))))
@@ -994,19 +1005,19 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(lui-button-face ((t (:inherit hover-highlight))))
 ;;;;; macrostep
    `(macrostep-gensym-1
-     ((t (:foreground ,monochwome-tone-3+2 :background ,monochwome-bg-2))))
+	 ((t (:foreground ,monochwome-tone-3+2 :background ,monochwome-bg-2))))
    `(macrostep-gensym-2
-     ((t (:foreground ,monochwome-tone-1+1 :background ,monochwome-bg-2))))
+	 ((t (:foreground ,monochwome-tone-1+1 :background ,monochwome-bg-2))))
    `(macrostep-gensym-3
-     ((t (:foreground ,monochwome-tone-4+1 :background ,monochwome-bg-2))))
+	 ((t (:foreground ,monochwome-tone-4+1 :background ,monochwome-bg-2))))
    `(macrostep-gensym-4
-     ((t (:foreground ,monochwome-tone-7 :background ,monochwome-bg-2))))
+	 ((t (:foreground ,monochwome-tone-7 :background ,monochwome-bg-2))))
    `(macrostep-gensym-5
-     ((t (:foreground ,monochwome-tone-2 :background ,monochwome-bg-2))))
+	 ((t (:foreground ,monochwome-tone-2 :background ,monochwome-bg-2))))
    `(macrostep-expansion-highlight-face
-     ((t (:inherit highlight))))
+	 ((t (:inherit highlight))))
    `(macrostep-macro-face
-     ((t (:underline t))))
+	 ((t (:underline t))))
 ;;;;; magit
 ;;;;;; headings and diffs
    ;; Please read (info "(magit)Theming Faces") before changing this.
@@ -1016,19 +1027,19 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(magit-diff-file-heading           ((t (:weight bold))))
    `(magit-diff-file-heading-highlight ((t (:background ,monochwome-bg+1 :weight bold))))
    `(magit-diff-file-heading-selection ((t (:background ,monochwome-bg+1 :weight bold
-                                                        :foreground ,monochwome-tone-6))))
-   `(magit-diff-added                  ((t (:background ,monochwome-tone-3-2))))
-   `(magit-diff-added-highlight        ((t (:background ,monochwome-tone-3))))
-   `(magit-diff-removed                ((t (:background ,monochwome-tone-1-4))))
-   `(magit-diff-removed-highlight      ((t (:background ,monochwome-tone-1-3))))
+							:foreground ,monochwome-tone-6))))
+   ;;`(magit-diff-added                  ((t (:background ,monochwome-tone-3-2))))
+   ;;`(magit-diff-added-highlight        ((t (:background ,monochwome-tone-3))))
+   ;;`(magit-diff-removed                ((t (:background ,monochwome-tone-1-4))))
+   ;;`(magit-diff-removed-highlight      ((t (:background ,monochwome-tone-1-3))))
    `(magit-diff-hunk-heading           ((t (:background ,monochwome-bg+1))))
    `(magit-diff-hunk-heading-highlight ((t (:background ,monochwome-bg+2))))
    `(magit-diff-hunk-heading-selection ((t (:background ,monochwome-bg+2
-                                                        :foreground ,monochwome-tone-6))))
+							:foreground ,monochwome-tone-6))))
    `(magit-diff-lines-heading          ((t (:background ,monochwome-tone-6
-                                                        :foreground ,monochwome-bg+2))))
+							:foreground ,monochwome-bg+2))))
    `(magit-diff-context-highlight      ((t (:background ,monochwome-bg+1
-                                                        :foreground "grey70"))))
+							:foreground "grey70"))))
    `(magit-diffstat-added              ((t (:foreground ,monochwome-tone-3+4))))
    `(magit-diffstat-removed            ((t (:foreground ,monochwome-tone-1))))
 ;;;;;; popup
@@ -1062,7 +1073,7 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(magit-blame-name    ((t (:background ,monochwome-bg-2 :foreground ,monochwome-tone-6))))
    `(magit-blame-date    ((t (:background ,monochwome-bg-2 :foreground ,monochwome-tone-6))))
    `(magit-blame-summary ((t (:background ,monochwome-bg-2 :foreground ,monochwome-tone-4-2
-                                          :weight bold))))
+					  :weight bold))))
 ;;;;;; references etc
    `(magit-dimmed         ((t (:foreground ,monochwome-bg+3))))
    `(magit-hash           ((t (:foreground ,monochwome-bg+3))))
@@ -1172,15 +1183,15 @@ Also bind `class' to ((class color) (min-colors 89))."
 ;;;;; merlin
    `(merlin-type-face ((t (:inherit highlight))))
    `(merlin-compilation-warning-face
-     ((((supports :underline (:style wave)))
-       (:underline (:style wave :color ,monochwome-tone-6)))
-      (t
-       (:underline ,monochwome-tone-6))))
+	 ((((supports :underline (:style wave)))
+	   (:underline (:style wave :color ,monochwome-tone-6)))
+	  (t
+	   (:underline ,monochwome-tone-6))))
    `(merlin-compilation-error-face
-     ((((supports :underline (:style wave)))
-       (:underline (:style wave :color ,monochwome-tone-1)))
-      (t
-       (:underline ,monochwome-tone-1))))
+	 ((((supports :underline (:style wave)))
+	   (:underline (:style wave :color ,monochwome-tone-1)))
+	  (t
+	   (:underline ,monochwome-tone-1))))
 ;;;;; mu4e
    `(mu4e-cited-1-face ((t (:foreground ,monochwome-tone-4    :slant italic))))
    `(mu4e-cited-2-face ((t (:foreground ,monochwome-tone-3+2 :slant italic))))
@@ -1239,35 +1250,37 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(orderless-match-face-3 ((t (:foreground ,monochwome-tone-6))))
 ;;;;; org-mode
    `(org-agenda-date-today
-     ((t (:foreground ,monochwome-tone-0+1 :slant italic :weight bold))) t)
+	 ((t (:foreground ,monochwome-tone-0+1 :slant italic :weight bold))) t)
    `(org-agenda-structure
-     ((t (:inherit font-lock-comment-face))))
+	 ((t (:inherit font-lock-comment-face))))
    `(org-archived ((t (:foreground ,monochwome-tone-0 :weight bold))))
-   `(org-block ((t (:background ,monochwome-bg :extend t))))
+   `(org-block ((t (:background ,monochwome-bg :extend t :family "Iosevka" :weight light))))
    ;; `(org-block ((,class (:foreground ,mono-fg :background ,mono-bg :inherit fixed-pitch))))
    ;; `(org-block-begin-line ((t (:foreground ,mono-orange-5 :background ,monochwome-bg :inherit fixed-pitch))))
    ;; `(org-block-background ((t (:background ,monochwome-bg :inherit fixed-pitch))))
    ;; `(org-block-end-line ((t (:foreground ,mono-orange-5 :background ,monochwome-bg :inherit fixed-pitch))))
+   `(org-code ((t (:foreground ,monochwome-tone-0-2 :inherit default))))
    `(org-checkbox ((t (:background ,monochwome-bg+2 :foreground ,monochwome-tone-0+1
-                                   :box (:line-width 1 :style released-button)))))
+				   :box (:line-width 1 :style released-button)))))
    `(org-date ((t (:foreground ,monochwome-tone-4 :underline t))))
+   `(org-drawer ((t (:foreground ,monochwome-tone-0-4))))
    `(org-deadline-announce ((t (:foreground ,monochwome-tone-1-1))))
    `(org-done ((t (:weight bold :weight bold :foreground ,monochwome-tone-3+3))))
    `(org-formula ((t (:foreground ,monochwome-tone-2-2))))
    `(org-headline-done ((t (:foreground ,monochwome-tone-3+3))))
    `(org-hide ((t (:foreground ,monochwome-bg))))
-   `(org-level-1 ((t (:inherit ,monochwome-variable-pitch :foreground ,monochwome-tone-0+5
-                               ,@(when monochwome-scale-org-headlines
-                                   (list :height monochwome-height-plus-4))))))
+   `(org-level-1 ((t (:inherit ,monochwome-variable-pitch :foreground ,monochwome-tone-0+4
+				   ,@(when monochwome-scale-org-headlines
+				   (list :height monochwome-height-plus-4))))))
    `(org-level-2 ((t (:inherit ,monochwome-variable-pitch :foreground ,monochwome-tone-0+4
-                               ,@(when monochwome-scale-org-headlines
-                                   (list :height monochwome-height-plus-3))))))
+				   ,@(when monochwome-scale-org-headlines
+				   (list :height monochwome-height-plus-3))))))
    `(org-level-3 ((t (:inherit ,monochwome-variable-pitch :foreground ,monochwome-tone-0+3
-                               ,@(when monochwome-scale-org-headlines
-                                   (list :height monochwome-height-plus-2))))))
+				   ,@(when monochwome-scale-org-headlines
+				   (list :height monochwome-height-plus-2))))))
    `(org-level-4 ((t (:inherit ,monochwome-variable-pitch :foreground ,monochwome-tone-0+2
-                               ,@(when monochwome-scale-org-headlines
-                                   (list :height monochwome-height-plus-1))))))
+				   ,@(when monochwome-scale-org-headlines
+				   (list :height monochwome-height-plus-1))))))
    `(org-level-5 ((t (:inherit ,monochwome-variable-pitch :foreground ,monochwome-tone-5))))
    `(org-level-6 ((t (:inherit ,monochwome-variable-pitch :foreground ,monochwome-tone-3+2))))
    `(org-level-7 ((t (:inherit ,monochwome-variable-pitch :foreground ,monochwome-tone-1+2))))
@@ -1281,9 +1294,10 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(org-special-keyword ((t (:inherit font-lock-comment-face))))
    `(org-table ((t (:foreground ,monochwome-tone-3+2))))
    `(org-tag ((t (:weight bold :weight bold))))
-   `(org-time-grid ((t (:foreground ,monochwome-tone-6))))
+   `(org--grid ((t (:foreground ,monochwome-tone-6))))
    `(org-todo ((t (:weight bold :foreground ,monochwome-tone-1 :weight bold))))
    `(org-upcoming-deadline ((t (:inherit font-lock-keyword-face))))
+   `(org-verbatim ((t (:foreground ,monochwome-tone-0-1 :box (:line-width 1 :foreground ,monochwome-tone-0-3)))))
    `(org-warning ((t (:weight bold :foreground ,monochwome-tone-1 :weight bold :underline nil))))
    `(org-column ((t (:background ,monochwome-bg-2))))
    `(org-column-title ((t (:background ,monochwome-bg-2 :underline t :weight bold))))
@@ -1292,10 +1306,11 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(org-ellipsis ((t (:foreground ,monochwome-tone-2-1 :underline t))))
    `(org-footnote ((t (:foreground ,monochwome-tone-5 :underline t))))
    `(org-document-title ((t (:inherit ,monochwome-variable-pitch :foreground ,monochwome-tone-4
-                                      :weight bold
-                                      ,@(when monochwome-scale-org-headlines
-                                          (list :height monochwome-height-plus-4))))))
+					  :weight bold
+					  ,@(when monochwome-scale-org-headlines
+					  (list :height monochwome-height-plus-4))))))
    `(org-document-info ((t (:foreground ,monochwome-tone-4))))
+   `(org-document-info-keyword ((t (:foreground ,monochwome-tone-0+3))))
    `(org-habit-ready-face ((t :background ,monochwome-tone-3)))
    `(org-habit-alert-face ((t :background ,monochwome-tone-2-1 :foreground ,monochwome-bg)))
    `(org-habit-clear-face ((t :background ,monochwome-tone-4-3)))
@@ -1304,6 +1319,12 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(org-habit-ready-future-face ((t :background ,monochwome-tone-3-2)))
    `(org-habit-alert-future-face ((t :background ,monochwome-tone-2-2 :foreground ,monochwome-bg)))
    `(org-habit-overdue-future-face ((t :background ,monochwome-tone-1-4)))
+;;;;; org-modern
+   `(org-modern-done ((t (:inherit org-modern-label :background ,monochwome-tone-0-5 :foreground ,monochwome-bg-3))))
+   `(org-modern-time-active ((t :weight bold :inherit org-modern-label :foreground ,monochwome-bg-2 :background ,monochwome-tone-0-3 :distant-foreground ,monochwome-tone-0-3 :width condensed)))
+   `(org-modern-date-active ((t (:inherit org-modern-time-active))))
+   `(org-modern-time-inactive ((t (:inherit org-modern-label :background ,monochwome-bg-2 :foreground ,monochwome-tone-0-3 :distant-foreground ,monochwome-bg :width condensed))))
+   `(org-modern-date-inactive ((t (:inherit org-modern-time-inactive))))
 ;;;;; org-ref
    `(org-ref-ref-face ((t :underline t)))
    `(org-ref-label-face ((t :underline t)))
@@ -1312,17 +1333,17 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(org-ref-acronym-face ((t :underline t)))
 ;;;;; outline
    `(outline-1 ((t (:inherit ,monochwome-variable-pitch :foreground ,monochwome-tone-6
-                             ,@(when monochwome-scale-outline-headlines
-                                 (list :height monochwome-height-plus-4))))))
+				 ,@(when monochwome-scale-outline-headlines
+				 (list :height monochwome-height-plus-4))))))
    `(outline-2 ((t (:inherit ,monochwome-variable-pitch :foreground ,monochwome-tone-3+4
-                             ,@(when monochwome-scale-outline-headlines
-                                 (list :height monochwome-height-plus-3))))))
+				 ,@(when monochwome-scale-outline-headlines
+				 (list :height monochwome-height-plus-3))))))
    `(outline-3 ((t (:inherit ,monochwome-variable-pitch :foreground ,monochwome-tone-4-1
-                             ,@(when monochwome-scale-outline-headlines
-                                 (list :height monochwome-height-plus-2))))))
+				 ,@(when monochwome-scale-outline-headlines
+				 (list :height monochwome-height-plus-2))))))
    `(outline-4 ((t (:inherit ,monochwome-variable-pitch :foreground ,monochwome-tone-2-2
-                             ,@(when monochwome-scale-outline-headlines
-                                 (list :height monochwome-height-plus-1))))))
+				 ,@(when monochwome-scale-outline-headlines
+				 (list :height monochwome-height-plus-1))))))
    `(outline-5 ((t (:inherit ,monochwome-variable-pitch :foreground ,monochwome-tone-5))))
    `(outline-6 ((t (:inherit ,monochwome-variable-pitch :foreground ,monochwome-tone-3+2))))
    `(outline-7 ((t (:inherit ,monochwome-variable-pitch :foreground ,monochwome-tone-1-4))))
@@ -1477,48 +1498,48 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(slime-repl-output-face ((t (:foreground ,monochwome-tone-1))))
    `(slime-repl-inputed-output-face ((t (:foreground ,monochwome-tone-3))))
    `(slime-error-face
-     ((((supports :underline (:style wave)))
-       (:underline (:style wave :color ,monochwome-tone-1)))
-      (t
-       (:underline ,monochwome-tone-1))))
+	 ((((supports :underline (:style wave)))
+	   (:underline (:style wave :color ,monochwome-tone-1)))
+	  (t
+	   (:underline ,monochwome-tone-1))))
    `(slime-warning-face
-     ((((supports :underline (:style wave)))
-       (:underline (:style wave :color ,monochwome-tone-6)))
-      (t
-       (:underline ,monochwome-tone-6))))
+	 ((((supports :underline (:style wave)))
+	   (:underline (:style wave :color ,monochwome-tone-6)))
+	  (t
+	   (:underline ,monochwome-tone-6))))
    `(slime-style-warning-face
-     ((((supports :underline (:style wave)))
-       (:underline (:style wave :color ,monochwome-tone-2)))
-      (t
-       (:underline ,monochwome-tone-2))))
+	 ((((supports :underline (:style wave)))
+	   (:underline (:style wave :color ,monochwome-tone-2)))
+	  (t
+	   (:underline ,monochwome-tone-2))))
    `(slime-note-face
-     ((((supports :underline (:style wave)))
-       (:underline (:style wave :color ,monochwome-tone-3)))
-      (t
-       (:underline ,monochwome-tone-3))))
+	 ((((supports :underline (:style wave)))
+	   (:underline (:style wave :color ,monochwome-tone-3)))
+	  (t
+	   (:underline ,monochwome-tone-3))))
    `(slime-highlight-face ((t (:inherit highlight))))
 ;;;;; SLY
    `(sly-mrepl-output-face ((t (:foreground ,monochwome-tone-1))))
    `(sly-error-face
-     ((((supports :underline (:style wave)))
-       (:underline (:style wave :color ,monochwome-tone-1)))
-      (t
-       (:underline ,monochwome-tone-1))))
+	 ((((supports :underline (:style wave)))
+	   (:underline (:style wave :color ,monochwome-tone-1)))
+	  (t
+	   (:underline ,monochwome-tone-1))))
    `(sly-warning-face
-     ((((supports :underline (:style wave)))
-       (:underline (:style wave :color ,monochwome-tone-6)))
-      (t
-       (:underline ,monochwome-tone-6))))
+	 ((((supports :underline (:style wave)))
+	   (:underline (:style wave :color ,monochwome-tone-6)))
+	  (t
+	   (:underline ,monochwome-tone-6))))
    `(sly-style-warning-face
-     ((((supports :underline (:style wave)))
-       (:underline (:style wave :color ,monochwome-tone-2)))
-      (t
-       (:underline ,monochwome-tone-2))))
+	 ((((supports :underline (:style wave)))
+	   (:underline (:style wave :color ,monochwome-tone-2)))
+	  (t
+	   (:underline ,monochwome-tone-2))))
    `(sly-note-face
-     ((((supports :underline (:style wave)))
-       (:underline (:style wave :color ,monochwome-tone-3)))
-      (t
-       (:underline ,monochwome-tone-3))))
+	 ((((supports :underline (:style wave)))
+	   (:underline (:style wave :color ,monochwome-tone-3)))
+	  (t
+	   (:underline ,monochwome-tone-3))))
    `(sly-stickers-placed-face ((t (:foreground ,monochwome-tone-0 :background ,monochwome-bg+3))))
 ;;;;; solaire
    `(solaire-default-face ((t (:inherit default :background ,monochwome-bg-3))))
@@ -1537,57 +1558,57 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(swiper-line-face ((t (:underline t))))
 ;;;;; sx
    `(sx-custom-button
-     ((t (:background ,monochwome-tone-0 :foreground ,monochwome-bg-2
-                      :box (:line-width 3 :style released-button) :height 0.9))))
+	 ((t (:background ,monochwome-tone-0 :foreground ,monochwome-bg-2
+			  :box (:line-width 3 :style released-button) :height 0.9))))
    `(sx-question-list-answers
-     ((t (:foreground ,monochwome-tone-3+3
-                      :height 1.0 :inherit sx-question-list-parent))))
+	 ((t (:foreground ,monochwome-tone-3+3
+			  :height 1.0 :inherit sx-question-list-parent))))
    `(sx-question-mode-accepted
-     ((t (:foreground ,monochwome-tone-3+3
-                      :height 1.3 :inherit sx-question-mode-title))))
+	 ((t (:foreground ,monochwome-tone-3+3
+			  :height 1.3 :inherit sx-question-mode-title))))
    '(sx-question-mode-content-face ((t (:inherit highlight))))
    `(sx-question-mode-kbd-tag
-     ((t (:box (:color ,monochwome-bg-2 :line-width 3 :style released-button)
-               :height 0.9 :weight semi-bold))))
+	 ((t (:box (:color ,monochwome-bg-2 :line-width 3 :style released-button)
+		   :height 0.9 :weight semi-bold))))
 ;;;;; tabbar
    `(tabbar-button ((t (:foreground ,monochwome-tone-0
-                                    :background ,monochwome-bg))))
+					:background ,monochwome-bg))))
    `(tabbar-selected ((t (:foreground ,monochwome-tone-0
-                                      :background ,monochwome-bg
-                                      :box (:line-width -1 :style pressed-button)))))
+					  :background ,monochwome-bg
+					  :box (:line-width -1 :style pressed-button)))))
    `(tabbar-unselected ((t (:foreground ,monochwome-tone-0
-                                        :background ,monochwome-bg+1
-                                        :box (:line-width -1 :style released-button)))))
+					:background ,monochwome-bg+1
+					:box (:line-width -1 :style released-button)))))
 ;;;;; tab-bar
    `(tab-bar ((t (:background ,monochwome-bg-3))))
    `(tab-bar-tab ((t (:foreground ,monochwome-bg
-                                  :background ,monochwome-tone-0
-                                  :weight bold))))
+				  :background ,monochwome-tone-0
+				  :weight bold))))
    `(tab-bar-tab-inactive ((t (:foreground ,monochwome-bg
-                                           :background ,monochwome-tone-0-5))))
+					   :background ,monochwome-tone-0-5))))
 ;;;;; tab-line
    `(tab-line ((t (:inherit tab-bar))))
    `(tab-line-tab ((t (:inherit tab-bar-tab))))
    `(tab-line-tab-inactive ((t (:inherit tab-bar-tab-inactive))))
    `(tab-line-tab-current ((t (:foreground ,monochwome-bg
-                                           :background ,monochwome-tone-0))))
+					   :background ,monochwome-tone-0))))
 ;;;;; term
    `(term-color-black ((t (:foreground ,monochwome-bg
-                                       :background ,monochwome-bg-2))))
+					   :background ,monochwome-bg-2))))
    `(term-color-red ((t (:foreground ,monochwome-tone-1-2
-                                     :background ,monochwome-tone-1-4))))
+					 :background ,monochwome-tone-1-4))))
    `(term-color-green ((t (:foreground ,monochwome-tone-3
-                                       :background ,monochwome-tone-3+2))))
+					   :background ,monochwome-tone-3+2))))
    `(term-color-yellow ((t (:foreground ,monochwome-tone-6
-                                        :background ,monochwome-tone-2))))
+					:background ,monochwome-tone-2))))
    `(term-color-blue ((t (:foreground ,monochwome-tone-4-1
-                                      :background ,monochwome-tone-4-4))))
+					  :background ,monochwome-tone-4-4))))
    `(term-color-magenta ((t (:foreground ,monochwome-tone-7
-                                         :background ,monochwome-tone-1))))
+					 :background ,monochwome-tone-1))))
    `(term-color-cyan ((t (:foreground ,monochwome-tone-5
-                                      :background ,monochwome-tone-4))))
+					  :background ,monochwome-tone-4))))
    `(term-color-white ((t (:foreground ,monochwome-tone-0
-                                       :background ,monochwome-tone-0-1))))
+					   :background ,monochwome-tone-0-1))))
    '(term-default-tint-0-color ((t (:inherit term-color-white))))
    '(term-default-bg-color ((t (:inherit term-color-black))))
 ;;;;; undo-tree
@@ -1635,14 +1656,14 @@ Also bind `class' to ((class color) (min-colors 89))."
 ;;;;; whitespace-mode
    `(whitespace-space ((t (:background ,monochwome-bg+1 :foreground ,monochwome-bg+1))))
    `(whitespace-hspace ((t (:background ,monochwome-bg+1 :foreground ,monochwome-bg+1))))
-   `(whitespace-tab ((t (:background ,monochwome-tone-1-1))))
-   `(whitespace-newline ((t (:foreground ,monochwome-bg+1))))
-   `(whitespace-trailing ((t (:background ,monochwome-tone-1))))
-   `(whitespace-line ((t (:background ,monochwome-bg :foreground ,monochwome-tone-7))))
-   `(whitespace-space-before-tab ((t (:background ,monochwome-tone-6 :foreground ,monochwome-tone-6))))
-   `(whitespace-indentation ((t (:background ,monochwome-tone-2 :foreground ,monochwome-tone-1))))
-   `(whitespace-empty ((t (:background ,monochwome-tone-2))))
-   `(whitespace-space-after-tab ((t (:background ,monochwome-tone-2 :foreground ,monochwome-tone-1))))
+   `(whitespace-tab ((t (:background ,monochwome-bg-3))))
+   `(whitespace-newline ((t (:foreground ,monochwome-bg-3))))
+   `(whitespace-trailing ((t (:background ,monochwome-bg-3))))
+   `(whitespace-line ((t (:background ,monochwome-bg-3))))
+   `(whitespace-space-before-tab ((t (:background ,monochwome-bg-3 :foreground ,monochwome-tone-6))))
+   `(whitespace-indentation ((t (:background ,monochwome-bg-3 :foreground ,monochwome-tone-1))))
+   `(whitespace-empty ((t (:background ,monochwome-bg-3))))
+   `(whitespace-space-after-tab ((t (:background ,monochwome-bg-3 :foreground ,monochwome-tone-1))))
 ;;;;; wanderlust
    `(wl-highlight-folder-few-face ((t (:foreground ,monochwome-tone-1-2))))
    `(wl-highlight-folder-many-face ((t (:foreground ,monochwome-tone-1-1))))
@@ -1664,7 +1685,7 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(wl-highlight-message-unimportant-header-contents ((t (:foreground ,monochwome-tone-0))))
    `(wl-highlight-summary-answered-face ((t (:foreground ,monochwome-tone-4))))
    `(wl-highlight-summary-disposed-face ((t (:foreground ,monochwome-tone-0
-                                                         :slant italic))))
+							 :slant italic))))
    `(wl-highlight-summary-new-face ((t (:foreground ,monochwome-tone-4))))
    `(wl-highlight-summary-normal-face ((t (:foreground ,monochwome-tone-0))))
    `(wl-highlight-summary-thread-top-face ((t (:foreground ,monochwome-tone-2))))
@@ -1679,7 +1700,7 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(cscope-line-number-face ((t (:foreground ,monochwome-tone-1 :weight bold))))
    `(cscope-mouse-face ((t (:foreground ,monochwome-bg :background ,monochwome-tone-4+1))))
    `(cscope-separator-face ((t (:foreground ,monochwome-tone-1 :weight bold
-                                            :underline t :overline t))))
+						:underline t :overline t))))
 ;;;;; yascroll
    `(yascroll:thumb-text-area ((t (:background ,monochwome-bg-2))))
    `(yascroll:thumb-fringe ((t (:background ,monochwome-bg-2 :foreground ,monochwome-bg-2))))
@@ -1691,7 +1712,7 @@ Also bind `class' to ((class color) (min-colors 89))."
    'monochwome
 ;;;;; ansi-color
    `(ansi-color-names-vector [,monochwome-bg ,monochwome-tone-1 ,monochwome-tone-3 ,monochwome-tone-2
-                                          ,monochwome-tone-4 ,monochwome-tone-7 ,monochwome-tone-5 ,monochwome-tone-0])
+					  ,monochwome-tone-4 ,monochwome-tone-7 ,monochwome-tone-5 ,monochwome-tone-0])
 ;;;;; company-quickhelp
    `(company-quickhelp-color-background ,monochwome-bg+1)
    `(company-quickhelp-color-foreground ,monochwome-tone-0)
@@ -1699,30 +1720,30 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(fci-rule-color ,monochwome-bg-1)
 ;;;;; nrepl-client
    `(nrepl-message-colors
-     '(,monochwome-tone-1 ,monochwome-tone-6 ,monochwome-tone-2 ,monochwome-tone-3 ,monochwome-tone-3+4
-       ,monochwome-tone-5 ,monochwome-tone-4+1 ,monochwome-tone-7))
+	 '(,monochwome-tone-1 ,monochwome-tone-6 ,monochwome-tone-2 ,monochwome-tone-3 ,monochwome-tone-3+4
+	   ,monochwome-tone-5 ,monochwome-tone-4+1 ,monochwome-tone-7))
 ;;;;; pdf-tools
    `(pdf-view-midnight-colors '(,monochwome-tone-0 . ,monochwome-bg-1))
 ;;;;; vc-annotate
    `(vc-annotate-color-map
-     '(( 20. . ,monochwome-tone-1-1)
-       ( 40. . ,monochwome-tone-1)
-       ( 60. . ,monochwome-tone-6)
-       ( 80. . ,monochwome-tone-2-2)
-       (100. . ,monochwome-tone-2-1)
-       (120. . ,monochwome-tone-2)
-       (140. . ,monochwome-tone-3-2)
-       (160. . ,monochwome-tone-3)
-       (180. . ,monochwome-tone-3+1)
-       (200. . ,monochwome-tone-3+2)
-       (220. . ,monochwome-tone-3+3)
-       (240. . ,monochwome-tone-3+4)
-       (260. . ,monochwome-tone-5)
-       (280. . ,monochwome-tone-4-2)
-       (300. . ,monochwome-tone-4-1)
-       (320. . ,monochwome-tone-4)
-       (340. . ,monochwome-tone-4+1)
-       (360. . ,monochwome-tone-7)))
+	 '(( 20. . ,monochwome-tone-1-1)
+	   ( 40. . ,monochwome-tone-1)
+	   ( 60. . ,monochwome-tone-6)
+	   ( 80. . ,monochwome-tone-2-2)
+	   (100. . ,monochwome-tone-2-1)
+	   (120. . ,monochwome-tone-2)
+	   (140. . ,monochwome-tone-3-2)
+	   (160. . ,monochwome-tone-3)
+	   (180. . ,monochwome-tone-3+1)
+	   (200. . ,monochwome-tone-3+2)
+	   (220. . ,monochwome-tone-3+3)
+	   (240. . ,monochwome-tone-3+4)
+	   (260. . ,monochwome-tone-5)
+	   (280. . ,monochwome-tone-4-2)
+	   (300. . ,monochwome-tone-4-1)
+	   (320. . ,monochwome-tone-4)
+	   (340. . ,monochwome-tone-4+1)
+	   (360. . ,monochwome-tone-7)))
    `(vc-annotate-very-old-color ,monochwome-tone-7)
    `(vc-annotate-background ,monochwome-bg-2)
    ))
@@ -1751,22 +1772,22 @@ Also bind `class' to ((class color) (min-colors 89))."
 ;;;###autoload
 (when load-file-name
   (add-to-list 'custom-theme-load-path
-               (file-name-as-directory (file-name-directory load-file-name))))
+		   (file-name-as-directory (file-name-directory load-file-name))))
 
 ;;;###autoload
 (defun monochwome-high-contrast-comment-mode()
   (interactive)
   (if monochwome-high-contrast-comments
-      (progn
-        (set-face-foreground font-lock-comment-face
-                             (eval (alist-get (intern "monochwome-tone-0-4") monochwome-default-colors-alist)))
-        (setq monochwome-high-contrast-comments nil))
-    (progn
-      ;; FWR we have to intern the string into a key to get the alist value at key. Isn't that fun.
-      ;; Actually, no, this don't work.
-      (set-face-foreground font-lock-comment-face
-                           (eval (alist-get (intern "monochwome-tone-0-5") monochwome-default-colors-alist)))
-      (setq monochwome-high-contrast-comments t))))
+	  (progn
+	(set-face-foreground font-lock-comment-face
+				 (eval (alist-get (intern "monochwome-tone-0-4") monochwome-default-colors-alist)))
+	(setq monochwome-high-contrast-comments nil))
+	(progn
+	  ;; FWR we have to intern the string into a key to get the alist value at key. Isn't that fun.
+	  ;; Actually, no, this don't work.
+	  (set-face-foreground font-lock-comment-face
+			   (eval (alist-get (intern "monochwome-tone-0-5") monochwome-default-colors-alist)))
+	  (setq monochwome-high-contrast-comments t))))
 
 (provide-theme 'monochwome)
 
