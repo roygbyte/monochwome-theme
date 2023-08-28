@@ -14,18 +14,22 @@
 This value should be a midtone value. Named colors like 'red', 'blue', 'green', and 'orange' look great!"
   :type 'color)
 
-(defcustom monochwome-fg-contrast-ratio 0.98
+(defcustom monochwome-seed-to-bg-diff 80
+  "How much darker the background color will be from the seed, in percent"
+  :type 'number)
+
+(defcustom monochwome-bg-range 50
+  "How much darker the darkest background color is from the lightest background color."
+  :type 'number)
+
+(defcustom monochwome-fg-contrast-ratio 70
   "Contrast ratio between the lightest and darkest fg tones."
   :type 'number)
 
-(defcustom monochwome-bg-contrast-ratio 0.90
-    "Contrast ratio between the bg tone and the fg tones."
-  :type 'number)
-
-(defvar monochwome-use-variable-pitch t
+(defvar monochwome-use-variable-pitch nil
   "When non-nil, use variable pitch face for some headings and titles.")
 
-(defvar monochwome-high-contrast-comments t
+(defvar monochwome-high-contrast-comments nil
   "When non-nil, increase contrast of comments and doc-strings.")
 
 (defvar monochwome-scale-org-headlines nil
@@ -64,39 +68,63 @@ This value should be a midtone value. Named colors like 'red', 'blue', 'green', 
   :group 'monochwome-theme
   :package-version '(monochwome . "2.6"))
 
-(setq monochwome-color-darkest
-	  (culler-hsl-to-hex (culler-darken-hsl (culler-rgb-to-hsl (color-name-to-rgb monochwome-seed-hue))
-						(* monochwome-fg-contrast-ratio 50))))
-(setq monochwome-color-lightest
-	  (culler-hsl-to-hex (culler-lighten-hsl (culler-rgb-to-hsl (color-name-to-rgb monochwome-seed-hue))
-						 (* monochwome-fg-contrast-ratio 50))))
-
-(setq monochwome-bg-0
-	  (culler-hsl-to-hex (culler-darken-hsl (culler-rgb-to-hsl (color-name-to-rgb monochwome-seed-hue))
-						(* monochwome-bg-contrast-ratio 50.0))))
-
-(setq monochwome-bg-tints-start-range
-	  (culler-hsl-to-hex (culler-lighten-hsl (culler-rgb-to-hsl (color-name-to-rgb monochwome-bg-0)) 8)))
-
-(defun monochwome-tints-from-colors(start-color stop-color steps)
+(defun monochwome-tints-from-colors (start-color stop-color steps)
   "Given a color, produce a range of tints. Color can be a name or hex. If hex, must start with a hash symbol.
 Evaluates to a list of hex values."
   (let* ((start-rgb (color-name-to-rgb start-color))
 	 (stop-rgb (color-name-to-rgb stop-color))
 	 (gradient (color-gradient start-rgb stop-rgb steps)))
-	(mapcar #'(lambda(color-step)
-		  (color-rgb-to-hex (nth 0 color-step)
-				(nth 1 color-step)
-				(nth 2 color-step) 2)) gradient)))
+    (mapcar #'(lambda(color-step)
+		(color-rgb-to-hex (nth 0 color-step)
+				  (nth 1 color-step)
+				  (nth 2 color-step) 2))
+	    gradient)))
 
-;; should the lightest/darkest be appended into the list? otherwise they are never used.
-(setq monochwome-tone-0-tints (monochwome-tints-from-colors monochwome-seed-hue monochwome-color-lightest 8))
-(setq monochwome-tone-0-shades (monochwome-tints-from-colors monochwome-seed-hue monochwome-color-darkest 8))
+(setq monochwome--seed-hsl
+      (culler-rgb-to-hsl (color-name-to-rgb monochwome-seed-hue)))
 
-(setq monochwome-bg-0-shades (append (monochwome-tints-from-colors monochwome-bg-0 monochwome-color-darkest 3)
-					   (list monochwome-color-darkest)))
-(setq monochwome-bg-0-tints (reverse (append (list monochwome-bg-tints-start-range)
-						   (monochwome-tints-from-colors monochwome-bg-tints-start-range monochwome-bg-0  3))))
+(setq monochwome-bg-0
+      (culler-hsl-to-hex
+       (culler-darken-hsl monochwome--seed-hsl
+			  monochwome-seed-to-bg-diff)))
+
+(setq monochwome--fg-color-darkest
+      (culler-hsl-to-hex
+       (culler-darken-hsl monochwome--seed-hsl
+			  monochwome-fg-contrast-ratio)))
+
+(setq monochwome--fg-color-lightest
+      (culler-hsl-to-hex
+       (culler-lighten-hsl monochwome--seed-hsl
+			   monochwome-fg-contrast-ratio)))
+
+(setq monochwome-tone-0-tints (monochwome-tints-from-colors
+			       monochwome-seed-hue monochwome--fg-color-lightest 8))
+
+(setq monochwome-tone-0-shades (monochwome-tints-from-colors
+				monochwome-seed-hue monochwome--fg-color-darkest 8))
+
+(setq monochwome-bg-darkest
+      (culler-hsl-to-hex (culler-darken-hsl
+			  (culler-rgb-to-hsl (color-name-to-rgb monochwome-bg-0))
+			  (* monochwome-bg-range 100.0))))
+
+(setq monochwome-bg-lightest
+      (culler-hsl-to-hex (culler-lighten-hsl
+			  (culler-rgb-to-hsl (color-name-to-rgb monochwome-bg-0))
+			  (* monochwome-bg-range 100.0))))
+
+(setq monochwome-bg-0-shades
+      (append (monochwome-tints-from-colors monochwome-bg-0
+					    monochwome-bg-darkest
+					    3)
+	      (list monochwome-bg-darkest)))
+
+(setq monochwome-bg-0-tints
+      (reverse (append (monochwome-tints-from-colors monochwome-bg-lightest
+						     monochwome-bg-0
+						     3)
+		       (list monochwome-bg-lightest))))
 
 ;; There should be a way to set desired contrast ratios?? This theme works because of the phenomenon of contrast. So find
 ;; a way to let me control that, incase I want to change the contrast!
@@ -122,8 +150,8 @@ Evaluates to a list of hex values."
 	("monochwome-tone-0-3" . (nth 2 monochwome-tone-0-shades))
 	("monochwome-tone-0-4" . (nth 3 monochwome-tone-0-shades))
 	("monochwome-tone-0-5" . (nth 4 monochwome-tone-0-shades))
-	("monochwome-lightest" . monochwome-color-lightest)
-	("monochwome-darkest"  . monochwome-color-darkest)
+	("monochwome-lightest" . monochwome-bg-lightest)
+	("monochwome-darkest"  . monochwome-bg-darkest)
 	("monochwome-tone-1-6" . monochwome-seed-hue)
 	("monochwome-tone-1-5" . monochwome-seed-hue)
 	("monochwome-tone-1-4" . monochwome-seed-hue)
@@ -185,8 +213,8 @@ Also bind `class' to ((class color) (min-colors 89))."
    '(button         ((t (:underline t))))
    `(link           ((t (:foreground ,monochwome-tone-0 :underline t :italic t))))
    `(link-visited   ((t (:foreground ,monochwome-tone-0-2 :underline t :weight normal))))
-   `(default        ((t (:foreground ,monochwome-tone-0+2 :background ,monochwome-bg :family "Iosevka" :height 105 :width expanded :weight light))))
-   `(variable-pitch ((,class (:family "Iosevka Aile" :weight semilight)))) ;; does this work?
+   `(default        ((t (:foreground ,monochwome-tone-0+2 :background ,monochwome-bg :family "Iosevka" :weight light))))
+   `(variable-pitch ((,class (:family "Iosevka" :weight light)))) ;; does this work?
    `(cursor         ((t (:foreground ,monochwome-tone-0 :background ,monochwome-tone-0+1))))
    `(widget-field   ((t (:foreground ,monochwome-tone-0 :background ,monochwome-bg+3))))
    `(escape-glyph   ((t (:foreground ,monochwome-tone-0 :weight bold))))
@@ -271,7 +299,7 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(vertical-border ((t (:foreground ,monochwome-bg+3))))
 ;;;;; font lock
    `(font-lock-builtin-face ((t (:foreground ,monochwome-tone-0+3))))
-   `(font-lock-comment-face ((t (:inherit ,monochwome-variable-pitch :foreground ,monochwome-tone-0-5))))
+   `(font-lock-comment-face ((t (:inherit ,monochwome-variable-pitch :foreground ,monochwome-tone-0-3))))
    `(font-lock-comment-delimiter-face ((t (:inherit font-lock-comment-face))))
    `(font-lock-constant-face ((t (:foreground ,monochwome-tone-0+4))))
    `(font-lock-doc-face ((t (:inherit font-lock-comment-face))))
