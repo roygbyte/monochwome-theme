@@ -18,7 +18,7 @@ This value should be a midtone value. Named colors like 'red', 'blue', 'green', 
   "How much darker the background color will be from the seed, in percent"
   :type 'number)
 
-(defcustom monochwome-bg-range 50
+(defcustom monochwome-bg-range 30
   "How much darker the darkest background color is from the lightest background color."
   :type 'number)
 
@@ -216,14 +216,14 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(default        ((t (:foreground ,monochwome-tone-0+2 :background ,monochwome-bg :family "Iosevka" :weight light))))
    `(variable-pitch ((,class (:family "Iosevka" :weight light)))) ;; does this work?
    `(cursor         ((t (:foreground ,monochwome-tone-0 :background ,monochwome-tone-0+1))))
-   `(widget-field   ((t (:foreground ,monochwome-tone-0 :background ,monochwome-bg+3))))
+   `(widget-field   ((t (:foreground ,monochwome-tone-0 :background ,monochwome-bg-0 :box (:line-width 1 :color ,monochwome-tone-0-5)))))
    `(escape-glyph   ((t (:foreground ,monochwome-tone-0 :weight bold))))
    `(fringe         ((t (:foreground ,monochwome-tone-0-4))))
    `(header-line    ((t (:foreground ,monochwome-tone-0
 				  :background ,monochwome-bg-2
 				  :box (:line-width -1 :style released-button)
 				  :extend t))))
-   `(highlight ((t (:background ,monochwome-bg+2))))
+   `(highlight ((t (:background ,monochwome-bg+1))))
    `(success   ((t (:foreground ,monochwome-tone-3 :weight bold))))
    `(warning   ((t (:foreground ,monochwome-tone-6 :weight bold))))
    `(tooltip   ((t (:foreground ,monochwome-tone-0 :background ,monochwome-bg+1))))
@@ -286,17 +286,17 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(lazy-highlight ((t (:foreground ,monochwome-tone-0 :weight bold :background ,monochwome-bg))))
 
    `(menu ((t (:foreground ,monochwome-tone-0 :background ,monochwome-bg))))
-   `(minibuffer-prompt ((t (:foreground ,monochwome-tone-0+1 :background ,monochwome-bg-3 :weight normal))))
+   `(minibuffer-prompt ((t (:foreground ,monochwome-tone-0+1 :background ,monochwome-bg-0 :weight normal))))
 ;;;;; mode line
    `(mode-line ((t (:foreground ,monochwome-bg :background ,monochwome-tone-0))))
    ;; `(mode-line-buffer-id ((t (:foreground ,monochwome-tone-0 :weight bold))))
    `(mode-line-inactive ((t (:foreground ,monochwome-bg :background ,monochwome-tone-0-5))))
 
-   `(region ((,class (:background ,monochwome-bg+3 :extend t))
+   `(region ((,class (:background ,monochwome-bg+1 :extend t))
 		 (t :inverse-video t)))
    `(secondary-selection ((t (:background ,monochwome-tone-0+5))))
    `(trailing-whitespace ((t (:background ,monochwome-tone-1))))
-   `(vertical-border ((t (:foreground ,monochwome-bg+3))))
+   `(vertical-border ((t (:foreground ,monochwome-tone-0-5))))
 ;;;;; font lock
    `(font-lock-builtin-face ((t (:foreground ,monochwome-tone-0+3))))
    `(font-lock-comment-face ((t (:inherit ,monochwome-variable-pitch :foreground ,monochwome-tone-0-3))))
@@ -837,17 +837,17 @@ Also bind `class' to ((class color) (min-colors 89))."
    '(hackernews-link          ((t (:inherit link         :underline nil))))
 ;;;;; helm
    `(helm-header
-	 ((t (:foreground ,monochwome-tone-3
-			  :background ,monochwome-bg
-			  :underline nil
-			  :box nil
-			  :extend t))))
+     ((t (:foreground ,monochwome-bg-2
+		      :background ,monochwome-tone-0-5
+		      :underline nil
+		      :box nil
+		      :extend t))))
    `(helm-source-header
-	 ((t (:foreground ,monochwome-tone-2
-			  :background ,monochwome-bg-2
-			  :underline nil
-			  :weight bold
-			  :extend t))))
+     ((t (:foreground ,monochwome-tone-2
+		      :foreground ,monochwome-tone-0+5
+		      :box (:line-width 1 :color ,monochwome-tone-0-5)
+		      :underline nil
+		      :extend t))))
    `(helm-selection ((t (:background ,monochwome-bg+1 :underline nil))))
    `(helm-selection-line ((t (:background ,monochwome-bg+1))))
    `(helm-visible-mark ((t (:foreground ,monochwome-bg :background ,monochwome-tone-0-2))))
@@ -1297,7 +1297,7 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(org-formula ((t (:foreground ,monochwome-tone-2-2))))
    `(org-headline-done ((t (:foreground ,monochwome-tone-3+3))))
    `(org-hide ((t (:foreground ,monochwome-bg))))
-   `(org-level-1 ((t (:inherit ,monochwome-variable-pitch :foreground ,monochwome-tone-0 :weight bold :background ,monochwome-bg+2
+   `(org-level-1 ((t (:inherit ,monochwome-variable-pitch :foreground ,monochwome-tone-0 :weight bold
 				   ,@(when monochwome-scale-org-headlines
 				   (list :height monochwome-height-plus-4))))))
    `(org-level-2 ((t (:inherit ,monochwome-variable-pitch :foreground ,monochwome-tone-0-2
