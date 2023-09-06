@@ -845,13 +845,12 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(helm-source-header
      ((t (:foreground ,monochwome-tone-2
 		      :foreground ,monochwome-tone-0+5
-		      :box (:line-width 1 :color ,monochwome-tone-0-5)
 		      :underline nil
 		      :extend t))))
-   `(helm-selection ((t (:background ,monochwome-bg+1 :underline nil))))
-   `(helm-selection-line ((t (:background ,monochwome-bg+1))))
+   `(helm-selection ((t (:background ,monochwome-tone-0+5 :underline nil :foreground ,monochwome-bg-0))))
+   `(helm-selection-line ((t (:background ,monochwome-tone-0-5 :foreground ,monochwome-bg-0))))
    `(helm-visible-mark ((t (:foreground ,monochwome-bg :background ,monochwome-tone-0-2))))
-   `(helm-candidate-number ((t (:foreground ,monochwome-tone-0+6 :background ,monochwome-bg-3))))
+   `(helm-candidate-number ((t (:foreground ,monochwome-bg-0 :background ,monochwome-tone-0-1))))
    `(helm-separator ((t (:foreground ,monochwome-tone-0 :background ,monochwome-bg))))
    `(helm-time-zone-current ((t (:foreground ,monochwome-tone-0+2 :background ,monochwome-bg))))
    `(helm-time-zone-home ((t (:foreground ,monochwome-tone-0 :background ,monochwome-bg))))
@@ -881,7 +880,7 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(helm-grep-lineno ((t (:foreground ,monochwome-tone-0-1 :background ,monochwome-bg))))
    `(helm-grep-match ((t (:foreground nil :background nil :inherit helm-match))))
    `(helm-grep-running ((t (:foreground ,monochwome-tone-0 :background ,monochwome-bg))))
-   `(helm-match ((t (:background ,monochwome-bg+3))))
+   `(helm-match ((t (:foreground ,monochwome-tone-0+6 :background ,monochwome-tone-0-5))))
    `(helm-moccur-buffer ((t (:foreground ,monochwome-tone-0 :background ,monochwome-bg))))
    `(helm-mu-contacts-address-face ((t (:foreground ,monochwome-tone-0-1 :background ,monochwome-bg))))
    `(helm-mu-contacts-name-face ((t (:foreground ,monochwome-tone-0 :background ,monochwome-bg))))
